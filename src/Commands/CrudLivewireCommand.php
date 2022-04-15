@@ -58,7 +58,7 @@ class CrudLivewireCommand extends Command
 
     protected function getStub($type)
     {
-        return file_get_contents("packages/gookkis/crudgen/resources/stubs/$type.stub");
+        return file_get_contents("vendor/gookkis/crudgen/resources/stubs/$type.stub");
     }
 
     protected function view($modelName)
