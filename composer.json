@@ -1,0 +1,18 @@
+{
+    "name": "gookkis/crudgen",
+    "description": "CRUD Generator with NobleUI Template",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Heri Kiswanto",
+            "email": "heryoulie@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Gookkis\\CrudGen\\": "src"
+        }
+    }
+}

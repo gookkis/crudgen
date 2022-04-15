@@ -1,0 +1,33 @@
+<div>
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Informasi {{modelName}}</h4>
+        </div>
+    </div>
+    @if ($visibleForm)
+        <livewire:{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-form />
+    @endif
+
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h6 class="card-title mb-0">{{modelName}}</h6>
+
+                        <a class="btn btn-outline-success btn-icon-text" wire:click="add{{modelName}}">
+                            <i class="mdi mdi-plus-box"></i> Tambah</a>
+
+                    </div>
+                    <hr />
+                    <livewire:{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-table />
+                </div>
+                <!--end card body-->
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

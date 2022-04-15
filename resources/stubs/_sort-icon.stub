@@ -1,0 +1,7 @@
+@if ($sortBy !== $field)
+    <i class="text-black-50 h5 mdi mdi-chevron-down"></i>
+@elseif ($sortDirection == 'asc')
+    <i class="text-info h5 mdi mdi-chevron-down"></i>
+@else
+    <i class="text-info h5 mdi mdi-chevron-up"></i>
+@endif

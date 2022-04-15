@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                @if ($isAdd)
+                    <h6 class="card-title">Tambah {{modelName}}</h6>
+                @else
+                    <h6 class="card-title">Update {{modelName}}</h6>
+                @endif
+                <form action="#">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">{{cols1}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control  @error('{{cols1}}') is-invalid @enderror"
+                                wire:model="{{cols1}}" placeholder="{{cols1}}" required>
+                            @error('{{cols1}}')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">{{cols2}}</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control @error('{{cols2}}') is-invalid @enderror"
+                                wire:model="{{cols2}}" autocomplete="off" required placeholder="{{cols2}}">
+                            @error('{{cols2}}')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">{{cols3}}</label>
+                       <div class="col-sm-9">
+                            <input type="text" class="form-control  @error('{{cols3}}') is-invalid @enderror" wire:model="{{cols3}}"
+                                placeholder="{{cols3}}">
+                            @error('{{cols3}}')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row-reverse bd-highlight mt-3">
+                        <a class="btn btn-primary ms-2" wire:click="simpan">Simpan</a>
+                        <a class="btn btn-secondary" wire:click="cancel">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

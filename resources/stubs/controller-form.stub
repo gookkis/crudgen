@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Livewire\{{modelName}};
+
+use App\Models\{{modelName}};
+use Livewire\Component;
+
+class {{modelName}}Form extends Component
+{
+
+    public $isAdd = true;
+    public ${{cols1}};
+    public ${{cols2}};
+    public ${{cols3}};
+    public ${{modelNameSingularLowerCase}}Id;
+
+    protected $listeners = [
+        'get{{modelName}}' => 'update{{modelName}}',
+        'tambah{{modelName}}' => 'resetForm'
+    ];
+
+    protected $rules = [
+        //'{{cols1}}' => 'required',
+        //'{{cols2}}' => 'required',
+    ];
+
+    public function render()
+    {
+        return view('livewire.{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-form');
+    }
+
+    public function cancel()
+    {
+        $this->emit('formReset');
+    }
+
+    public function simpan()
+    {
+        $this->validate();
+        if ($this->isAdd) {
+
+            ${{modelNameSingularLowerCase}} = {{modelName}}::create([
+                '{{cols1}}' => $this->{{cols1}},
+                '{{cols2}}' => $this->{{cols2}},
+                '{{cols3}}' => $this->{{cols3}}
+            ]);
+            $this->emit('{{modelNameSingularLowerCase}}Stored');
+        } else {
+            ${{modelNameSingularLowerCase}} = {{modelName}}::find($this->{{modelNameSingularLowerCase}}Id);
+
+            ${{modelNameSingularLowerCase}}->{{cols1}} = $this->{{cols1}};
+            ${{modelNameSingularLowerCase}}->{{cols2}} = $this->{{cols2}};
+            ${{modelNameSingularLowerCase}}->{{cols3}} = $this->{{cols3}};
+            ${{modelNameSingularLowerCase}}->save();
+
+            $this->emit('{{modelNameSingularLowerCase}}Updated');
+        }
+        $this->resetForm();
+    }
+
+    public function update{{modelName}}($id)
+    {
+        $this->isAdd = false;
+        ${{modelNameSingularLowerCase}} = {{modelName}}::find($id);
+        $this->{{modelNameSingularLowerCase}}Id = ${{modelNameSingularLowerCase}}->id;
+        $this->{{cols1}} = ${{modelNameSingularLowerCase}}->{{cols1}};
+        $this->{{cols2}} = ${{modelNameSingularLowerCase}}->{{cols2}};
+        $this->{{cols3}} = ${{modelNameSingularLowerCase}}->{{cols3}};
+    }
+    public function resetForm()
+    {
+        $this->{{modelNameSingularLowerCase}}Id = null;
+        $this->{{cols1}} = null;
+        $this->{{cols2}} = null;
+        $this->{{cols3}} = null;
+        $this->isAdd = true;
+    }
+}
