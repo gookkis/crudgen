@@ -111,12 +111,18 @@ class CrudLivewireCommand extends Command
         $func_update_col = '';
         $null_col = '';
         foreach ($cols as $col) {
-            $public_col .= '\npublic $' . $col . ';';
-            $rules_col .= '\n//\'' . $col . '\' => \'required\',';
-            $create_col .= '\n\'' . $col . '\' => $this->' . $col . ',';
-            $update_col .= '\n$' . strtolower($modelName) . '->' . $col . ' = $this->' . $col . ';';
-            $func_update_col .= '\n$this->' . $col . ' = $' . strtolower($modelName) . '->' . $col . ';';
-            $null_col .= '\n$this->' . $col . ' = null;';
+            $public_col .= '
+            public $' . $col . ';';
+            $rules_col .= '
+            //\'' . $col . '\' => \'required\',';
+            $create_col .= '
+            \'' . $col . '\' => $this->' . $col . ',';
+            $update_col .= '
+            $' . strtolower($modelName) . '->' . $col . ' = $this->' . $col . ';';
+            $func_update_col .= '
+            $this->' . $col . ' = $' . strtolower($modelName) . '->' . $col . ';';
+            $null_col .= '
+            $this->' . $col . ' = null;';
         }
 
 
@@ -201,7 +207,7 @@ class CrudLivewireCommand extends Command
         $input_col = '';
 
         foreach ($cols as $col) {
-            $input_col .= '\n
+            $input_col .= '
             <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">' . ucwords(strtolower($col)) . '</label>
                         <div class="col-sm-9">
@@ -267,14 +273,15 @@ class CrudLivewireCommand extends Command
         $th_col = '';
         $td_col = '';
         foreach ($cols as $col) {
-            $th_col .=  '\n<th wire:click="sortBy(\'' . $col . '\')" style="cursor: pointer;">
+            $th_col .=  '
+            <th wire:click="sortBy(\'' . $col . '\')" style="cursor: pointer;">
             ' . ucwords(strtolower($col)) . '
             @include(\'livewire.partials._sort-icon\', [
                 \'field\' => \'' . $col . '\',
             ])</th>';
 
             $td_col = '
-            \n<td>{{ $item->' . $col . ' }}</td>';
+            <td>{{ $item->' . $col . ' }}</td>';
         }
         $controllerTemplate = str_replace(
             [
