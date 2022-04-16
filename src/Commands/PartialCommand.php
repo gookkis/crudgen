@@ -58,7 +58,9 @@ class PartialCommand extends Command
         $sort = resource_path('views/livewire/partials/_sort-icon.blade.php');
         $spinner = resource_path('views/livewire/partials/_spinner.blade.php');
         if (!file_exists($sort)) {
-            mkdir(resource_path('views/livewire/partials', 0700));
+            if (!file_exists(resource_path('views/livewire/partials', 0700))) {
+                mkdir(resource_path('views/livewire/partials', 0700));
+            }
             file_put_contents(resource_path('views/livewire/partials/_sort-icon.blade.php'), $this->getStub('_sort-icon'));
         }
         if (!file_exists($spinner)) {

@@ -9,9 +9,7 @@ class {{modelName}}Form extends Component
 {
 
     public $isAdd = true;
-    public ${{cols1}};
-    public ${{cols2}};
-    public ${{cols3}};
+    {{public_col}}
     public ${{modelNameSingularLowerCase}}Id;
 
     protected $listeners = [
@@ -20,8 +18,7 @@ class {{modelName}}Form extends Component
     ];
 
     protected $rules = [
-        //'{{cols1}}' => 'required',
-        //'{{cols2}}' => 'required',
+          {{rules_col}}
     ];
 
     public function render()
@@ -40,17 +37,13 @@ class {{modelName}}Form extends Component
         if ($this->isAdd) {
 
             ${{modelNameSingularLowerCase}} = {{modelName}}::create([
-                '{{cols1}}' => $this->{{cols1}},
-                '{{cols2}}' => $this->{{cols2}},
-                '{{cols3}}' => $this->{{cols3}}
+                {{create_col}}
             ]);
             $this->emit('{{modelNameSingularLowerCase}}Stored');
         } else {
             ${{modelNameSingularLowerCase}} = {{modelName}}::find($this->{{modelNameSingularLowerCase}}Id);
 
-            ${{modelNameSingularLowerCase}}->{{cols1}} = $this->{{cols1}};
-            ${{modelNameSingularLowerCase}}->{{cols2}} = $this->{{cols2}};
-            ${{modelNameSingularLowerCase}}->{{cols3}} = $this->{{cols3}};
+            {{update_col}}
             ${{modelNameSingularLowerCase}}->save();
 
             $this->emit('{{modelNameSingularLowerCase}}Updated');
@@ -63,16 +56,12 @@ class {{modelName}}Form extends Component
         $this->isAdd = false;
         ${{modelNameSingularLowerCase}} = {{modelName}}::find($id);
         $this->{{modelNameSingularLowerCase}}Id = ${{modelNameSingularLowerCase}}->id;
-        $this->{{cols1}} = ${{modelNameSingularLowerCase}}->{{cols1}};
-        $this->{{cols2}} = ${{modelNameSingularLowerCase}}->{{cols2}};
-        $this->{{cols3}} = ${{modelNameSingularLowerCase}}->{{cols3}};
+        {{func_update_col}}
     }
     public function resetForm()
     {
         $this->{{modelNameSingularLowerCase}}Id = null;
-        $this->{{cols1}} = null;
-        $this->{{cols2}} = null;
-        $this->{{cols3}} = null;
+        {{null_col}}
         $this->isAdd = true;
     }
 }

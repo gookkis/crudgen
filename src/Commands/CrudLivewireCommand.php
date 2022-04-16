@@ -103,20 +103,44 @@ class CrudLivewireCommand extends Command
 
     protected function controller_form($modelName, $cols)
     {
+
+        $public_col = '';
+        $rules_col = '';
+        $create_col = '';
+        $update_col = '';
+        $func_update_col = '';
+        $null_col = '';
+        foreach ($cols as $col) {
+            $public_col += '\npublic $' . $col . ';';
+            $rules_col += '\n//\'' . $col . '\' => \'required\',';
+            $create_col += '\n\'' . $col . '\' => $this->' . $col . ',';
+            $update_col += '\n$' . strtolower($modelName) . '->' . $col . ' = $this->' . $col . ';';
+            $func_update_col += '\n$this->' . $col . ' = $' . strtolower($modelName) . '->' . $col . ';';
+            $null_col += '\n$this->' . $col . ' = null;';
+        }
+
+
+
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
-                '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
+                '{{public_col}}',
+                '{{rules_col}}',
+                '{{create_col}}',
+                '{{update_col}}',
+                '{{func_update_col}}',
+                '{{null_col}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
-                $cols[0],
-                $cols[1],
-                $cols[2]
+                $public_col,
+                $rules_col,
+                $create_col,
+                $update_col,
+                $func_update_col,
+                $null_col
             ],
             $this->getStub('controller-form')
         );
@@ -133,17 +157,11 @@ class CrudLivewireCommand extends Command
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
-                '{{modelNameSingularLowerCase}}',
-                '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
+                '{{modelNameSingularLowerCase}}'
             ],
             [
                 $modelName,
-                strtolower($modelName),
-                $cols[0],
-                $cols[1],
-                $cols[2]
+                strtolower($modelName)
             ],
             $this->getStub('controller-index')
         );
@@ -161,15 +179,11 @@ class CrudLivewireCommand extends Command
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
                 '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
             ],
             [
                 $modelName,
                 strtolower($modelName),
                 $cols[0],
-                $cols[1],
-                $cols[2]
             ],
             $this->getStub('controller-table')
         );
@@ -181,49 +195,38 @@ class CrudLivewireCommand extends Command
         $this->info("{$modelName}Table.php Created");
     }
 
-    protected function view_index($modelName, $cols)
-    {
-        $controllerTemplate = str_replace(
-            [
-                '{{modelName}}',
-                '{{modelNameSingularLowerCase}}',
-                '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
-            ],
-            [
-                $modelName,
-                strtolower($modelName),
-                $cols[0],
-                $cols[1],
-                $cols[2]
-            ],
-            $this->getStub('view-index')
-        );
-        if (!file_exists(resource_path('views/livewire/' . strtolower($modelName)))) {
-            mkdir(resource_path('views/livewire/' . strtolower($modelName), 0755));
-        }
-        file_put_contents(resource_path("views/livewire/" . strtolower($modelName) . "/" . strtolower($modelName) . "-index.blade.php"), $controllerTemplate);
-
-        $this->info(strtolower($modelName) . "-index.blade.php Created");
-    }
-
     protected function view_form($modelName, $cols)
     {
+
+        $input_col = '';
+
+        foreach ($cols as $col) {
+            $input_col += '\n
+            <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">' . ucwords(strtolower($col)) . '</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control  @error(\'' . $col . '\') is-invalid @enderror"
+                                wire:model="' . $col . '" placeholder="' . ucwords(strtolower($col)) . '" required>
+                            @error(\'' . $col . '\')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+            ';
+        }
+
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
-                '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
+                '{{input_col}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
-                $cols[0],
-                $cols[1],
-                $cols[2]
+                $input_col
             ],
             $this->getStub('view-form')
         );
@@ -235,22 +238,56 @@ class CrudLivewireCommand extends Command
         $this->info(strtolower($modelName) . "-form.blade.php Created");
     }
 
-    protected function view_table($modelName, $cols)
+    protected function view_index($modelName, $cols)
     {
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
+                '{{modelNameSingularLowerCase}}'
+            ],
+            [
+                $modelName,
+                strtolower($modelName)
+            ],
+            $this->getStub('view-index')
+        );
+        if (!file_exists(resource_path('views/livewire/' . strtolower($modelName)))) {
+            mkdir(resource_path('views/livewire/' . strtolower($modelName), 0755));
+        }
+        file_put_contents(resource_path("views/livewire/" . strtolower($modelName) . "/" . strtolower($modelName) . "-index.blade.php"), $controllerTemplate);
+
+        $this->info(strtolower($modelName) . "-index.blade.php Created");
+    }
+
+
+
+    protected function view_table($modelName, $cols)
+    {
+
+        $th_col = '';
+        $td_col = '';
+        foreach ($cols as $col) {
+            $th_col +=  '\n<th wire:click="sortBy(\'' . $col . '\')" style="cursor: pointer;">
+            ' . ucwords(strtolower($col)) . '
+            @include(\'livewire.partials._sort-icon\', [
+                \'field\' => \'' . $col . '\',
+            ])</th>';
+
+            $td_col = '
+            \n<td>{{ $item->' . $col . ' }}</td>';
+        }
+        $controllerTemplate = str_replace(
+            [
+                '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
-                '{{cols1}}',
-                '{{cols2}}',
-                '{{cols3}}',
+                '{{th_col}}',
+                '{{td_col}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
-                $cols[0],
-                $cols[1],
-                $cols[2]
+                $th_col,
+                $td_col
             ],
             $this->getStub('view-table')
         );

@@ -25,26 +25,7 @@
                 <thead>
                     <tr>
                         <th width="5%">No</th>
-                        <th wire:click="sortBy('{{cols1}}')" style="cursor: pointer;">
-                            {{cols1}}
-                            @include('livewire.partials._sort-icon', [
-                                'field' => '{{cols1}}',
-                            ])
-
-                        </th>
-                        <th wire:click="sortBy('{{cols2}}')" style="cursor: pointer;">
-                            {{cols2}}
-
-                            @include('livewire.partials._sort-icon', [
-                                'field' => '{{cols2}}',
-                            ])
-                        </th>
-                        <th wire:click="sortBy('{{cols3}}')" style="cursor: pointer;" width="20%">
-                            {{cols3}}
-                            @include('livewire.partials._sort-icon', [
-                                'field' => '{{cols3}}',
-                            ])
-                        </th>
+                        {{th_col}}
                         <th>Opsi</th>
                     </tr>
                 </thead>
