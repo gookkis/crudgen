@@ -37,13 +37,7 @@
                                 <td>
                                     {{ $perPage * ($page - 1) + $key + 1 }}
                                 </td>
-                                <td>{{ $item->{{cols1}} }}</td>
-                                <td>
-                                    {{ $item->{{cols2}} }}
-                                </td>
-                                <td>
-                                    {{ $item->{{cols3}} }}
-                                </td>
+                                {{td_col}}
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-outline-success btn-icon btn-xs"
