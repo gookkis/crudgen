@@ -280,7 +280,7 @@ class CrudLivewireCommand extends Command
                 \'field\' => \'' . $col . '\',
             ])</th>';
 
-            $td_col = '
+            $td_col .= '
             <td>{{ $item->' . $col . ' }}</td>';
         }
         $controllerTemplate = str_replace(
@@ -288,13 +288,15 @@ class CrudLivewireCommand extends Command
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
                 '{{th_col}}',
-                '{{td_col}}'
+                '{{td_col}}',
+                '{{cols1}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
                 $th_col,
-                $td_col
+                $td_col,
+                $cols[0]
             ],
             $this->getStub('view-table')
         );
