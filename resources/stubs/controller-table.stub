@@ -60,6 +60,7 @@ class {{modelName}}Table extends Component
     public function delete($id)
     {
         {{modelName}}::destroy($id);
+        $this->emit('formReset');
     }
 
     public function clearSearch()
