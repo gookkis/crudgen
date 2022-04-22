@@ -23,7 +23,7 @@ class {{modelName}}Form extends Component
 
     public function render()
     {
-        return view('livewire.{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-form');
+        return view('livewire.{{modelDashes}}.{{modelDashes}}-form');
     }
 
     public function cancel()

@@ -19,7 +19,7 @@ class {{modelName}}Index extends Component
 
     public function render()
     {
-        return view('livewire.{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-index');
+        return view('livewire.{{modelDashes}}.{{modelDashes}}-index');
     }
 
     public function add{{modelName}}()
@@ -31,7 +31,7 @@ class {{modelName}}Index extends Component
     public function handleStored()
     {
         $this->handleReset();
-        $this->emit('alert', ['type' => 'success', 'message' => '{{modelName}} {{modelName}} berhasil disimpan.']);
+        $this->emit('alert', ['type' => 'success', 'message' => '{{modelName}} berhasil disimpan.']);
     }
 
     public function handleReset()

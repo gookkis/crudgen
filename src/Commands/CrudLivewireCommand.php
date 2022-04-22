@@ -56,6 +56,19 @@ class CrudLivewireCommand extends Command
         );
     }
 
+    function convertToDashes($input)
+    {
+        $pattern = '!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!';
+        preg_match_all($pattern, $input, $matches);
+        $ret = $matches[0];
+        foreach ($ret as &$match) {
+            $match = $match == strtoupper($match) ?
+                strtolower($match) :
+                lcfirst($match);
+        }
+        return implode('_', $ret);
+    }
+
     protected function getStub($type)
     {
         return file_get_contents("vendor/gookkis/crudgen/resources/stubs/$type.stub");
@@ -67,10 +80,12 @@ class CrudLivewireCommand extends Command
             [
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
+                '{{modelDashes}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
+                $this->convertToDashes($modelName)
             ],
             $this->getStub('view')
         );
@@ -136,7 +151,8 @@ class CrudLivewireCommand extends Command
                 '{{create_col}}',
                 '{{update_col}}',
                 '{{func_update_col}}',
-                '{{null_col}}'
+                '{{null_col}}',
+                '{{modelDashes}}'
             ],
             [
                 $modelName,
@@ -146,7 +162,8 @@ class CrudLivewireCommand extends Command
                 $create_col,
                 $update_col,
                 $func_update_col,
-                $null_col
+                $null_col,
+                $this->convertToDashes($modelName)
             ],
             $this->getStub('controller-form')
         );
@@ -163,11 +180,13 @@ class CrudLivewireCommand extends Command
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
-                '{{modelNameSingularLowerCase}}'
+                '{{modelNameSingularLowerCase}}',
+                '{{modelDashes}}'
             ],
             [
                 $modelName,
-                strtolower($modelName)
+                strtolower($modelName),
+                $this->convertToDashes($modelName)
             ],
             $this->getStub('controller-index')
         );
@@ -185,11 +204,13 @@ class CrudLivewireCommand extends Command
                 '{{modelName}}',
                 '{{modelNameSingularLowerCase}}',
                 '{{cols1}}',
+                '{{modelDashes}}'
             ],
             [
                 $modelName,
                 strtolower($modelName),
                 $cols[0],
+                $this->convertToDashes($modelName)
             ],
             $this->getStub('controller-table')
         );
@@ -236,12 +257,12 @@ class CrudLivewireCommand extends Command
             ],
             $this->getStub('view-form')
         );
-        if (!file_exists(resource_path('views/livewire/' . strtolower($modelName)))) {
-            mkdir(resource_path('views/livewire/' . strtolower($modelName), 0755));
+        if (!file_exists(resource_path('views/livewire/' . $this->convertToDashes($modelName)))) {
+            mkdir(resource_path('views/livewire/' . $this->convertToDashes($modelName), 0755));
         }
-        file_put_contents(resource_path("views/livewire/" . strtolower($modelName) . "/" . strtolower($modelName) . "-form.blade.php"), $controllerTemplate);
+        file_put_contents(resource_path("views/livewire/" . $this->convertToDashes($modelName) . "/" . $this->convertToDashes($modelName) . "-form.blade.php"), $controllerTemplate);
 
-        $this->info(strtolower($modelName) . "-form.blade.php Created");
+        $this->info($this->convertToDashes($modelName) . "-form.blade.php Created");
     }
 
     protected function view_index($modelName, $cols)
@@ -249,20 +270,22 @@ class CrudLivewireCommand extends Command
         $controllerTemplate = str_replace(
             [
                 '{{modelName}}',
-                '{{modelNameSingularLowerCase}}'
+                '{{modelNameSingularLowerCase}}',
+                '{{modelDashes}}'
             ],
             [
                 $modelName,
-                strtolower($modelName)
+                strtolower($modelName),
+                $this->convertToDashes($modelName)
             ],
             $this->getStub('view-index')
         );
-        if (!file_exists(resource_path('views/livewire/' . strtolower($modelName)))) {
-            mkdir(resource_path('views/livewire/' . strtolower($modelName), 0755));
+        if (!file_exists(resource_path('views/livewire/' . $this->convertToDashes($modelName)))) {
+            mkdir(resource_path('views/livewire/' . $this->convertToDashes($modelName), 0755));
         }
-        file_put_contents(resource_path("views/livewire/" . strtolower($modelName) . "/" . strtolower($modelName) . "-index.blade.php"), $controllerTemplate);
+        file_put_contents(resource_path("views/livewire/" . $this->convertToDashes($modelName) . "/" . $this->convertToDashes($modelName) . "-index.blade.php"), $controllerTemplate);
 
-        $this->info(strtolower($modelName) . "-index.blade.php Created");
+        $this->info($this->convertToDashes($modelName) . "-index.blade.php Created");
     }
 
 
@@ -300,11 +323,11 @@ class CrudLivewireCommand extends Command
             ],
             $this->getStub('view-table')
         );
-        if (!file_exists(resource_path('views/livewire/' . strtolower($modelName)))) {
-            mkdir(resource_path('views/livewire/' . strtolower($modelName), 0755));
+        if (!file_exists(resource_path('views/livewire/' . $this->convertToDashes($modelName)))) {
+            mkdir(resource_path('views/livewire/' . $this->convertToDashes($modelName), 0755));
         }
-        file_put_contents(resource_path("views/livewire/" . strtolower($modelName) . "/" . strtolower($modelName) . "-table.blade.php"), $controllerTemplate);
+        file_put_contents(resource_path("views/livewire/" . $this->convertToDashes($modelName) . "/" . $this->convertToDashes($modelName) . "-table.blade.php"), $controllerTemplate);
 
-        $this->info(strtolower($modelName) . "-table.blade.php Created");
+        $this->info($this->convertToDashes($modelName) . "-table.blade.php Created");
     }
 }

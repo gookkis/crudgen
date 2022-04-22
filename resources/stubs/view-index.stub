@@ -5,7 +5,7 @@
         </div>
     </div>
     @if ($visibleForm)
-        <livewire:{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-form />
+        <livewire:{{modelDashes}}.{{modelDashes}}-form />
     @endif
 
     <div class="row">
@@ -20,7 +20,7 @@
 
                     </div>
                     <hr />
-                    <livewire:{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-table />
+                    <livewire:{{modelDashes}}.{{modelDashes}}-table />
                 </div>
                 <!--end card body-->
             </div>

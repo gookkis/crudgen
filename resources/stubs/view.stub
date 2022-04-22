@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('content')
-    @livewire('{{modelNameSingularLowerCase}}.{{modelNameSingularLowerCase}}-index')
+    @livewire('{{modelDashes}}.{{modelDashes}}-index')
 @endsection
 
 @push('custom-scripts')
