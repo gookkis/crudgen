@@ -66,7 +66,7 @@ class CrudLivewireCommand extends Command
                 strtolower($match) :
                 lcfirst($match);
         }
-        return implode('_', $ret);
+        return implode('-', $ret);
     }
 
     protected function getStub($type)
